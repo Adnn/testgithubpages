@@ -25,6 +25,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Generate the HTML output using asciidoctor
+      - name: Generate HTML
+        uses: mgred/asciidoctor-action@master
+        with:
+            args: asciidoctor index.adoc
+
       # Release
       - name: Create Release
         id: create_release
@@ -36,3 +42,15 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+
+      # Upload the generated HTML as a release asset
+      - name: Upload Release Asset
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./index.html
+          asset_name: index.html
+          asset_content_type: text/html
