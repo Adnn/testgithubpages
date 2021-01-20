@@ -61,10 +61,11 @@ jobs:
         with:
           ref: 'gh-pages'
 
+      # From https://github.community/t/how-to-get-just-the-tag-name/16241/29
       - name: Commit the generated html
         run: |
           mkdir -p v
-          mv index.html v/${{ github.ref }}.html
-          git add v/${{ github.ref }}.html
-          git commit -m "Publish ${{ github.ref }}"
+          mv index.html v/${{ github.event.ref }}.html
+          git add v/${{ github.event.ref }}.html
+          git commit -m "Publish ${{ github.event.ref }}"
           git push
