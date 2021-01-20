@@ -13,7 +13,8 @@ jobs:
   # Set the job key. The key is displayed as the job name
   # when a job name is not provided
   release:
-    if: github.event.base_ref == 'refs/heads/main'
+    # This filter never seems to pass
+    #if: github.event.base_ref == 'refs/heads/main'
     # Name the Job
     name: Release on GitHub
     # Set the type of machine to run on
