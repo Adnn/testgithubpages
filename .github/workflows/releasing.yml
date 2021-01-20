@@ -54,3 +54,16 @@ jobs:
           asset_path: ./index.html
           asset_name: index.html
           asset_content_type: text/html
+
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout publication branch
+        uses: actions/checkout@v2
+        ref: 'gh-pages'
+
+      - name: Commit the generated html
+        run: |
+          mkdir -p v
+          mv index.html v/${{ github.ref }}.html
+          git add v/${{ github.ref }}.html
+          git commit -m "Publish ${{ github.ref }}"
+          git push
