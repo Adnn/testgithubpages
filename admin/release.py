@@ -52,6 +52,19 @@ def bump_changelog(v):
 def commit_and_tag(v):
     subprocess.run(["git", "add", "CHANGELOG.md"], check=True)
     subprocess.run(["git", "commit", "-m", "Prepare release v{}".format(v)], check=True)
+    branches = subprocess.run(["git", "branch", "--list"], check=True, capture_output=True).stdout
+
+    if re.match(" main^", flags=re.MULTILINE):
+        release_branch = "main"
+    elif re.match(" master^", flags=re.MULTILINE):
+        release_branch = "master"
+    else:
+        raise Exception("Cannot infer the release branch, please merge and tag it manually")
+
+    subprocess.run(["git", "checkout", release_branch], check=True)
+    subprocess.run(["git", "merge", "develop", "--no-ff"], check=True)
+    subprocess.run(["git", "tag", "-a", "v{}".format(version), "-m", "Release v{}".format(version)], check=True)
+    subprocess.run(["git", "push"], check=True)
 
 
 if __name__ == "__main__":
@@ -60,6 +73,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    if subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True).stdout != "develop":
+        raise Exception("Repository is not on develop branch")
     if subprocess.run(["git", "diff-index", "--quiet", "HEAD"]).returncode != 0:
         raise Exception("Repository has changes, please stash them first")
 
