@@ -6,4 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/
+## [0.5.3] - 2021-02-10
+
+[Unreleased]: https://github.com/Adnn/testgithubpages/compare/v0.5.3...HEAD
+[0.5.3]: https://github.com/Adnn/testgithubpages/releases/tag/v0.5.3
