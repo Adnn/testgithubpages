@@ -31,6 +31,12 @@ jobs:
         with:
             args: asciidoctor index.adoc
 
+      # Extract release notes following "Keep-a-changelog" convention
+      # see: https://github.com/ffurrer2/extract-release-notes
+      - name: Extract release notes
+        id: extract-release-notes
+        uses: ffurrer2/extract-release-notes@v1
+
       # Release
       - name: Create Release
         id: create_release
@@ -42,6 +48,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+          body: ${{ steps.extract-release-notes.outputs.release_notes }}
 
       # Upload the generated HTML as a release asset
       - name: Upload Release Asset
