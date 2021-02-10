@@ -73,7 +73,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True).stdout != "develop":
+    if subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True).stdout.decode('utf-8').rstrip() != "develop":
+        print(subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True).stdout)
         raise Exception("Repository is not on develop branch")
     if subprocess.run(["git", "diff-index", "--quiet", "HEAD"]).returncode != 0:
         raise Exception("Repository has changes, please stash them first")
