@@ -53,9 +53,10 @@ def commit_and_tag(v, release_branch):
     subprocess.run(["git", "add", "CHANGELOG.md"], check=True)
     subprocess.run(["git", "commit", "-m", "Prepare release v{}".format(v)], check=True)
     subprocess.run(["git", "checkout", release_branch], check=True)
-    subprocess.run(["git", "merge", "develop", "--no-ff"], check=True)
+    subprocess.run(["git", "merge", "develop", "--no-ff", "--no-edit"], check=True)
     subprocess.run(["git", "tag", "-a", "v{}".format(v), "-m", "Release v{}".format(v)], check=True)
-    subprocess.run(["git", "push"], check=True)
+    subprocess.run(["git", "push", "--follow-tags"], check=True)
+    subprocess.run(["git", "checkout", "develop"], check=True)
 
 
 if __name__ == "__main__":
