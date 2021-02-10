@@ -52,11 +52,11 @@ def bump_changelog(v):
 def commit_and_tag(v):
     subprocess.run(["git", "add", "CHANGELOG.md"], check=True)
     subprocess.run(["git", "commit", "-m", "Prepare release v{}".format(v)], check=True)
-    branches = subprocess.run(["git", "branch", "--list"], check=True, capture_output=True).stdout
+    branches = subprocess.run(["git", "branch", "--list"], check=True, capture_output=True).stdout.decode("utf-8")
 
-    if re.match(" main^", flags=re.MULTILINE):
+    if re.match("\smain^", branches, flags=re.MULTILINE):
         release_branch = "main"
-    elif re.match(" master^", flags=re.MULTILINE):
+    elif re.match("\smaster^", branches, flags=re.MULTILINE):
         release_branch = "master"
     else:
         raise Exception("Cannot infer the release branch, please merge and tag it manually")
