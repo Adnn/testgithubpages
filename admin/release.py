@@ -60,7 +60,7 @@ def commit_and_tag(v, release_branch):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Prepare a release by updating the changelog and commiting changes to current branch + tagging a new commit on 'main'")
+    parser = argparse.ArgumentParser(description="Prepare a release by updating the changelog and commiting changes to current branch + tagging a new commit on the release branch.")
     parser.add_argument("version", help="The version to be released")
     parser.add_argument("releasebranch", help="The branch into which the releases are tagged")
 
